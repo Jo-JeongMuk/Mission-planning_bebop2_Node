@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="1">
+  <name>bebop2_galago</name>
+  <version>0.0.0</version>
+  <description>bebop2_galago</description>
+
+  <maintainer email="muk@muk.muk">muk</maintainer>
+
+  <license>muk</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>bebop_msgs</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>bebop_msgs</run_depend>
+
+</package>
