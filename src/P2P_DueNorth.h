@@ -1,5 +1,5 @@
-#ifndef POINTTOPOINT
-#define POINTTOPOINT
+#ifndef P2P_DUE_NORTH
+#define P2P_DUE_NORTH
 #define LOCATION bebop_msgs::Ardrone3PilotingStatePositionChangedConstPtr& msg
 #define ALTITUDE bebop_msgs::Ardrone3PilotingStateAltitudeChangedConstPtr& msg
 #define ATTITUDE bebop_msgs::Ardrone3PilotingStateAttitudeChangedConstPtr& msg
@@ -7,18 +7,17 @@
 #include "bebop_msgs/Ardrone3PilotingStatePositionChanged.h"
 #include "bebop_msgs/Ardrone3PilotingStateAltitudeChanged.h"
 #include "bebop_msgs/Ardrone3PilotingStateAttitudeChanged.h"
-#include "std_msgs/Empty.h"
 #include <geometry_msgs/Twist.h>
 
-typedef struct _List{
-    double Latitude;
-    double Longitude;
-    double Altitude;
-    double Speed;
-//    struct _List *next;
-} List;
+typedef struct _List{//
+    double Latitude;//
+    double Longitude;//
+    double Altitude;//
+    double Speed;//
+    struct _List *next;//
+} List;//
 
-class PointToPoint {
+class P2P_DueNorth {
 public:
     int     init_argc;
     char**  init_argv;
@@ -30,13 +29,10 @@ public:
     ros::Subscriber location;
     ros::Subscriber altitude;
     ros::Subscriber attitude;
-    ros::Publisher land;
-    ros::Publisher takeoff;
-    std_msgs::Empty empty_msg;
     geometry_msgs::Twist twist;
 
-    PointToPoint(int argc, char** argv);
-    ~PointToPoint() {}
+    P2P_DueNorth(int argc, char** argv);
+    ~P2P_DueNorth() {}
 
     void init();
     void locationCallback(const LOCATION);
