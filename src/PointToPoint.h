@@ -30,7 +30,7 @@ public:
     void locationCallback(const LOCATION);
     void altitudeCallback(const ALTITUDE);
     void attitudeCallback(const ATTITUDE);
-    bool Move(const double g_lati, const double g_long, const double g_alti, const double speed);
+    void Move(const double g_lati, const double g_long, const double g_alti, const double speed);
 };
 
 #endif

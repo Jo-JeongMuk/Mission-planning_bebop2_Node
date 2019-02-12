@@ -7,11 +7,11 @@
 #include "bebop_msgs/Ardrone3PilotingStatePositionChanged.h"
 #include "bebop_msgs/Ardrone3PilotingStateSpeedChanged.h"
 
-#define BATTERY bebop_msgs::CommonCommonStateBatteryStateChangedConstPtr& msg
+#define BATTERY   bebop_msgs::CommonCommonStateBatteryStateChangedConstPtr& msg
 #define SATELLITE bebop_msgs::Ardrone3GPSStateNumberOfSatelliteChangedConstPtr& msg
-#define ALTITUDE bebop_msgs::Ardrone3PilotingStateAltitudeChangedConstPtr& msg
-#define LOCATION bebop_msgs::Ardrone3PilotingStatePositionChangedConstPtr& msg
-#define SPEED bebop_msgs::Ardrone3PilotingStateSpeedChangedConstPtr& msg
+#define ALTITUDE  bebop_msgs::Ardrone3PilotingStateAltitudeChangedConstPtr& msg
+#define LOCATION  bebop_msgs::Ardrone3PilotingStatePositionChangedConstPtr& msg
+#define SPEED     bebop_msgs::Ardrone3PilotingStateSpeedChangedConstPtr& msg
 
 class SendStatue {
 private:

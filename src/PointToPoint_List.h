@@ -22,9 +22,9 @@ class PointToPoint_List {
 public:
     int     init_argc;
     char**  init_argv;
-    double  h_lati, h_long;
-    bool    homeOrNot, pause;
+    double  h_lati, h_long, h_alti, h_speed;
     double  c_lati, c_long, c_alti, c_yaw;
+    bool    homeOrNot, pause;
 
     ros::Subscriber      location;
     ros::Subscriber      altitude;
@@ -46,7 +46,6 @@ public:
     void Stop();
     void Ros_SpinOnce();
     void P2P(double g_lati, double g_long, double g_alti, double speed);
-    double TrueBearing(double g_lati, double g_long);
     void Move(std::list<List>* _list);
 };
 

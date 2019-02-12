@@ -88,8 +88,8 @@ int main(int argc, char** argv){
 
 	SendStatue a(argc, argv);
 	a.init();
-	double dist = a.distance(36.5204184, 127.1730486, 36.5203376, 127.1731411);
-	ROS_INFO("distance = %lf m", dist);
+//ex	double dist = a.distance(36.5204184, 127.1730486, 36.5203376, 127.1731411);
+//ex	ROS_INFO("distance = %lf m", dist);
 	ros::spin();
 	return 0;
 }
