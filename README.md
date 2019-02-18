@@ -13,3 +13,5 @@ PointToPoint Node is move bebop from current location to GPS location that from 
 PointToPoint Node_List is basicly same function to PointToPoint Node. 
 PointToPoint Node is move bebop to way point. 
 You have to send to this Node to lists's referrence.
+
+Mostly, Be careful. P2P_DueNorth Node is not yet done. Never use the Node.
