@@ -1,6 +1,6 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-#include "SendStatue.h"
+#include "SendState.h"
 #include <cmath>
 
 #define BATT_PUB "bebop/states/common/CommonState/BatteryStateChanged"
