@@ -88,9 +88,13 @@ void PointToPoint_List::P2P(double g_lati, double g_long, double g_alti, double 
     double g_lati_radian = g_lati * RADIAN;
     double g_long_radian = g_long * RADIAN;
 
-    while (true)
-    {
-        PointToPoint_List::Ros_SpinOnce();
+    while (true) {
+        try {
+            ros::spinOnce();
+        } catch (...) {
+            ROS_ERROR("--- ERROR IN spin(), shutting down! ---");
+            ros::shutdown();
+        }
 
         float linXYZ_AngZ[4] = {0, 0, 0, 0};
 
@@ -100,20 +104,22 @@ void PointToPoint_List::P2P(double g_lati, double g_long, double g_alti, double 
         double dist_rad = acos(sin(c_lati_radian) * sin(g_lati_radian) + cos(c_lati_radian)
                           * cos(g_lati_radian) * cos(c_long_radian - g_long_radian));
 
-        double dist = dist_rad * ANGLE * METER;
+        double dist = dist_rad * ANGLE * METER - (speed * LIMITE_DIST);
+
+        if (dist < LIMITE_DIST) break;
 
         double radian = acos((sin(g_lati_radian) - sin(c_lati_radian) * cos(dist_rad))
                         / (cos(c_lati_radian) * sin(dist_rad)));
 
         double c_bearing = this->c_yaw * ANGLE;
-        if (c_bearing < 0)
-            c_bearing = 360 - abs(c_bearing);
+        if (c_bearing <= 0)   c_bearing = 360 - abs(c_bearing);
+		if (c_bearing >= 355) c_bearing = 355;
+		if (c_bearing <= 5)   c_bearing = 5;
 
         double true_bearing = radian * ANGLE;
-        if (g_long < this->c_long)
-            true_bearing = 360 - true_bearing;
-
-        if (dist < LIMITE_DIST) break;
+        if (g_long < this->c_long) true_bearing = 360 - true_bearing;
+		if (true_bearing >= 355)   true_bearing = 355;
+		if (true_bearing <= 5)     true_bearing = 5;
 
         if (this->c_alti < g_alti - 0.3)
             linXYZ_AngZ[2] = 0.3;
@@ -124,23 +130,23 @@ void PointToPoint_List::P2P(double g_lati, double g_long, double g_alti, double 
             if (true_bearing < c_bearing + 15 && true_bearing > c_bearing - 15)
             {
                 linXYZ_AngZ[0] = speed;
-                if (true_bearing < c_bearing + 5)
+                if (true_bearing <= c_bearing + 15 && true_bearing >= c_bearing + 5)
                 {
-                    linXYZ_AngZ[3] = speed / 2;
-                    linXYZ_AngZ[1] = speed / 3;
+                    linXYZ_AngZ[1] =  - (speed / 3);
+                    linXYZ_AngZ[3] =  - (speed / 2);
                 }
-                else if (true_bearing > c_bearing - 5)
+                else if (true_bearing >= c_bearing - 15 && true_bearing <= c_bearing - 5)
                 {
-                    linXYZ_AngZ[3] = - (speed / 2);
-                    linXYZ_AngZ[1] = - (speed / 3);
+                    linXYZ_AngZ[1] = speed / 3;
+                    linXYZ_AngZ[3] = speed / 2;
                 }
             }
             else
             {
-                if (true_bearing < c_bearing + 15)
-                    linXYZ_AngZ[3] = speed / 2;
-                else if (true_bearing > c_bearing - 15)
-                    linXYZ_AngZ[3] = - (speed / 2);
+                if (true_bearing < c_bearing)
+                    linXYZ_AngZ[3] = speed;
+                else if (true_bearing > c_bearing)
+                    linXYZ_AngZ[3] = - (speed);
             }
         }
 

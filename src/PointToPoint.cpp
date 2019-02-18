@@ -68,20 +68,22 @@ void PointToPoint::Move(const double g_lati, const double g_long, const double g
         double dist_rad = acos(sin(c_lati_radian) * sin(g_lati_radian) + cos(c_lati_radian)
                           * cos(g_lati_radian) * cos(c_long_radian - g_long_radian));
 
-        double dist = dist_rad * ANGLE * METER;
+        double dist = dist_rad * ANGLE * METER - (speed * LIMITE_DIST);
+
+        if (dist < LIMITE_DIST) break;
 
         double radian = acos((sin(g_lati_radian) - sin(c_lati_radian) * cos(dist_rad))
                         / (cos(c_lati_radian) * sin(dist_rad)));
 
         double c_bearing = this->c_yaw * ANGLE;
-        if (c_bearing < 0)
-            c_bearing = 360 - abs(c_bearing);
+        if (c_bearing <= 0)   c_bearing = 360 - abs(c_bearing);
+		if (c_bearing >= 355) c_bearing = 355;
+		if (c_bearing <= 5)   c_bearing = 5;
 
         double true_bearing = radian * ANGLE;
-        if (g_long < this->c_long)
-            true_bearing = 360 - true_bearing;
-
-        if (dist < LIMITE_DIST) break;
+        if (g_long < this->c_long) true_bearing = 360 - true_bearing;
+		if (true_bearing >= 355)   true_bearing = 355;
+		if (true_bearing <= 5)     true_bearing = 5;
 
         if (this->c_alti < g_alti - 0.3)
             linXYZ_AngZ[2] = 0.3;
@@ -92,23 +94,23 @@ void PointToPoint::Move(const double g_lati, const double g_long, const double g
             if (true_bearing < c_bearing + 15 && true_bearing > c_bearing - 15)
             {
                 linXYZ_AngZ[0] = speed;
-                if (true_bearing < c_bearing + 5)
+                if (true_bearing <= c_bearing + 15 && true_bearing >= c_bearing + 5)
                 {
-                    linXYZ_AngZ[3] = speed / 2;
-                    linXYZ_AngZ[1] = speed / 3;
+                    linXYZ_AngZ[1] =  - (speed / 3);
+                    linXYZ_AngZ[3] =  - (speed / 2);
                 }
-                else if (true_bearing > c_bearing - 5)
+                else if (true_bearing >= c_bearing - 15 && true_bearing <= c_bearing - 5)
                 {
-                    linXYZ_AngZ[3] = - (speed / 2);
-                    linXYZ_AngZ[1] = - (speed / 3);
+                    linXYZ_AngZ[1] = speed / 3;
+                    linXYZ_AngZ[3] = speed / 2;
                 }
             }
             else
             {
-                if (true_bearing < c_bearing + 15)
-                    linXYZ_AngZ[3] = speed / 2;
-                else if (true_bearing > c_bearing - 15)
-                    linXYZ_AngZ[3] = - (speed / 2);
+                if (true_bearing < c_bearing)
+                    linXYZ_AngZ[3] = speed;
+                else if (true_bearing > c_bearing)
+                    linXYZ_AngZ[3] = - (speed);
             }
         }
 
@@ -125,9 +127,14 @@ void PointToPoint::Move(const double g_lati, const double g_long, const double g
 int main(int argc, char** argv){
     PointToPoint a(argc, argv);
     a.init();
-//ex    a.Move(36.519619, 127.172811, 2.0, 0.5);
-//ex    a.Move(36.519827, 127.173253, 2.0, 0.5);
-//ex    a.Move(36.519668, 127.173425, 2.0, 0.5);
+// ex
+    a.Move(36.519794, 127.172729, 2.0, 0.5);
+	a.Move(36.519668, 127.173469, 2.0, 0.5);	
+	a.Move(36.519634, 127.172790, 2.0, 0.5);
+	a.Move(36.519886, 127.173316, 2.0, 0.5);
+	a.Move(36.519756, 127.173248, 2.0, 0.5);
+//    a.Move(36.519619, 127.172811, 2.0, 0.5);
+//    a.Move(36.519668, 127.173425, 2.0, 0.5);
 
     return 0;
 }
